@@ -19,7 +19,9 @@ HelloSamplerAudioProcessor::HelloSamplerAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+                      thumbnailCache (5),                            // [4]
+                      thumbnail (512, mFormatManager, thumbnailCache) // [5]
 #endif
 {
     mFormatManager.registerBasicFormats();
@@ -170,6 +172,7 @@ void HelloSamplerAudioProcessor::setStateInformation (const void* data, int size
     // whose contents will have been created by the getStateInformation() call.
 }
 
+// USING CHOOSER
 void HelloSamplerAudioProcessor::loadFile()
 {
     mSampler.clearSounds();
@@ -180,6 +183,7 @@ void HelloSamplerAudioProcessor::loadFile()
     {
         auto file = chooser.getResult();
         mFormatReader = mFormatManager.createReaderFor(file);
+        thumbnail.setSource (new juce::FileInputSource (file));
     }
     
     BigInteger range;
@@ -193,7 +197,7 @@ void HelloSamplerAudioProcessor::loadFile(const String& path)
     
     File file = File(path);
     mFormatReader = mFormatManager.createReaderFor(file);
-    int lenSamples = static_cast<int>(mFormatReader->lengthInSamples);
+//    int lenSamples = static_cast<int>(mFormatReader->lengthInSamples);
     
 //    for (int sample = 0; sample < mWaveForm.getNumSamples(); sample++)
 //    {

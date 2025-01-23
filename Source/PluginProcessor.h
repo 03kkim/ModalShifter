@@ -58,12 +58,16 @@ public:
     
     int getNumSamplerSounds() {return mSampler.getNumSounds();};
     
+    AudioFormatManager mFormatManager;
+    AudioThumbnailCache thumbnailCache;                  // [1]
+    AudioThumbnail thumbnail;                            // [2]
 
 private:
     Synthesiser mSampler;
     const int mNumVoices { 3 };
     
-    AudioFormatManager mFormatManager;
+    
+    
     AudioFormatReader* mFormatReader { nullptr };
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HelloSamplerAudioProcessor)
